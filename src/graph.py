@@ -15,7 +15,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
 from src.nodes.planner import planner_node_stub
-from src.nodes.researcher import researcher_node_stub
+from src.nodes.researcher import researcher_node
 from src.nodes.filter import filter_node_stub
 from src.nodes.summarizer import summarizer_node_stub
 from src.nodes.formatter import formatter_node_stub
@@ -39,7 +39,7 @@ def build_graph(checkpointer=None):
     # Day 4: all five nodes are stubs. Swapped to real implementations
     # one by one starting with the Researcher later today.
     graph.add_node("planner", planner_node_stub)
-    graph.add_node("researcher", researcher_node_stub)
+    graph.add_node("researcher", researcher_node)
     graph.add_node("filter", filter_node_stub)
     graph.add_node("summarizer", summarizer_node_stub)
     graph.add_node("formatter", formatter_node_stub)

@@ -19,8 +19,7 @@ from pydantic import ValidationError
 
 from src.graph import build_graph
 from src.schemas import BriefingFailure, BriefingResult, BriefingSuccess
-from dotenv import load_dotenv
-load_dotenv()
+
 
 # Input validation thresholds. Topics shorter than 15 chars are too vague
 # to plan against; topics longer than 500 chars are not topics, they're
