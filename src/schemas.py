@@ -57,12 +57,6 @@ class Summary(BaseModel):
 
 
 class BriefingState(TypedDict):
-    """LangGraph state for the briefing pipeline.
-
-    Keys annotated with `add` use list concatenation as the reducer (append on
-    update). Unannotated keys use the default overwrite reducer.
-    """
-
     # inputs (overwrite — set once at graph entry)
     topic: str
     run_started_at: datetime
@@ -70,14 +64,15 @@ class BriefingState(TypedDict):
     # planner output (append)
     search_queries: Annotated[list[str], add]
 
-    # researcher output (append — critical for Day 5 parallel fan-out)
-    raw_articles: Annotated[list[Article], add]
+    # researcher output (append — stored as dicts for msgpack-compat;
+    # rehydrate with Article.model_validate when needed inside a node)
+    raw_articles: Annotated[list[dict], add]
 
-    # filter output (append)
-    scored_articles: Annotated[list[ScoredArticle], add]
+    # filter output (append, same convention as raw_articles)
+    scored_articles: Annotated[list[dict], add]
 
-    # summarizer output (append)
-    summaries: Annotated[list[Summary], add]
+    # summarizer output (append, same convention)
+    summaries: Annotated[list[dict], add]
 
     # formatter output (overwrite — produced once)
     final_briefing: str

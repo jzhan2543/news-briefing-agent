@@ -119,5 +119,5 @@ def run_briefing(topic: str) -> BriefingResult:
         run_started_at=started_at,
         run_completed_at=datetime.utcnow(),
         thread_id=thread_id,
-        source_urls=[str(s.article_url) for s in final_state["summaries"]],
+        source_urls=[s["article_url"] for s in final_state["summaries"]],
     )

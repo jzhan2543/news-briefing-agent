@@ -6,22 +6,23 @@ Real implementation (SPEC §3.4) lands on Day 5.
 """
 
 from src.config import RELEVANCE_THRESHOLD
-from src.schemas import BriefingState, Summary
+from src.schemas import BriefingState, Summary, ScoredArticle
 
 
 def summarizer_node_stub(state: BriefingState) -> dict:
     """Stub: trivial summary for each article above the relevance threshold."""
-    return {
-        "summaries": [
-            Summary(
-                article_url=sa.article.url,
-                summary=f"Stub summary for: {sa.article.title}",
-                key_claims=["Stub claim 1", "Stub claim 2"],
-            )
-            for sa in state["scored_articles"]
-            if sa.relevance >= RELEVANCE_THRESHOLD
-        ],
-    }
+    summaries = []
+    for sa_dict in state["scored_articles"]:
+        sa = ScoredArticle.model_validate(sa_dict)
+        if sa.relevance < RELEVANCE_THRESHOLD:
+            continue
+        summary = Summary(
+            article_url=sa.article.url,
+            summary=f"Stub summary for: {sa.article.title}",
+            key_claims=["Stub claim 1", "Stub claim 2"],
+        )
+        summaries.append(summary.model_dump(mode="json"))
+    return {"summaries": summaries}
 
 
 # Real implementation placeholder. Day 5:

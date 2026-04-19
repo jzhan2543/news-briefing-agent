@@ -5,18 +5,17 @@ Day 4 stub: gives every article a relevance of 4 without thinking.
 Real implementation (SPEC §3.3) lands on Day 5.
 """
 
-from src.schemas import BriefingState, ScoredArticle
+from src.schemas import Article, BriefingState, ScoredArticle
 
 
 def filter_node_stub(state: BriefingState) -> dict:
     """Stub: uniform relevance=4 for every article."""
-    return {
-        "scored_articles": [
-            ScoredArticle(article=a, relevance=4, rationale="stub")
-            for a in state["raw_articles"]
-        ],
-    }
-
+    scored = []
+    for article_dict in state["raw_articles"]:
+        article = Article.model_validate(article_dict)
+        sa = ScoredArticle(article=article, relevance=4, rationale="stub")
+        scored.append(sa.model_dump(mode="json"))
+    return {"scored_articles": scored}
 
 # Real implementation placeholder. Day 5:
 # - Pydantic FilterJudgment(relevance, rationale)

@@ -12,17 +12,14 @@ def researcher_node_stub(state: BriefingState) -> dict:
     """Stub: returns a single hardcoded Article, preserving source_query provenance."""
     queries = state["search_queries"]
     first_query = queries[0] if queries else "stub"
-    return {
-        "raw_articles": [
-            Article(
-                url="https://example.com/stub-article-1",
-                title="Stub: Example News Article",
-                snippet="This is a stub article used for scaffold testing.",
-                published_date=None,
-                source_query=first_query,
-            ),
-        ],
-    }
+    article = Article(
+        url="https://example.com/stub-article-1",
+        title="Stub: Example News Article",
+        snippet="This is a stub article used for scaffold testing.",
+        published_date=None,
+        source_query=first_query,
+    )
+    return {"raw_articles": [article.model_dump(mode="json")]}
 
 
 # Real implementation placeholder. Later today:
