@@ -1,19 +1,22 @@
-# Core LLM SDK
+# --- LLM + agent framework ---
 anthropic
-
-# Search tool for the Researcher
-tavily-python
-
-# LangGraph + LangChain (Day 3 onward)
-langgraph
 langchain
+langgraph
 langchain-anthropic
 
-# Observability (Day 3)
+# --- Tools ---
+tavily-python
+httpx
+tenacity
+
+# --- Data & validation ---
+pydantic>=2
+
+# --- Observability ---
 langsmith
 
-# Structured outputs + validation (Day 4+)
-pydantic
+# --- Testing (Day 4 acceptance) ---
+pytest
 
-# Environment variable management
+# --- Utilities ---
 python-dotenv
