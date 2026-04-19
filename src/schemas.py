@@ -31,8 +31,8 @@ class Article(BaseModel):
     url: HttpUrl
     title: str
     snippet: str
-    published_date: datetime | None = None
-    source_query: str  # which planner query produced this article
+    published_date: str | None = None       # was: datetime | None = None
+    source_query: str
 
 
 class ScoredArticle(BaseModel):
