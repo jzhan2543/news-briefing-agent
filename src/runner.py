@@ -11,7 +11,7 @@ See SPEC §5 for the full contract and the rationale for the interim
 `except Exception` / reason="unknown" posture.
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from langgraph.errors import GraphRecursionError
@@ -40,7 +40,7 @@ def run_briefing(topic: str) -> BriefingResult:
     graph are caught and classified. The thread_id is preserved on both
     success and failure so the LangSmith trace is always recoverable.
     """
-    started_at = datetime.utcnow()
+    started_at = datetime.now(UTC)
 
     # --- input validation (before graph invocation) ---
     if not isinstance(topic, str):
@@ -49,7 +49,7 @@ def run_briefing(topic: str) -> BriefingResult:
             reason="invalid_topic",
             message=f"Expected str, got {type(topic).__name__}.",
             run_started_at=started_at,
-            run_failed_at=datetime.utcnow(),
+            run_failed_at=datetime.now(UTC),
             thread_id=None,
         )
     topic = topic.strip()
@@ -62,7 +62,7 @@ def run_briefing(topic: str) -> BriefingResult:
                 f"got {len(topic)}."
             ),
             run_started_at=started_at,
-            run_failed_at=datetime.utcnow(),
+            run_failed_at=datetime.now(UTC),
             thread_id=None,
         )
 
@@ -87,7 +87,7 @@ def run_briefing(topic: str) -> BriefingResult:
             reason="max_iterations",
             message=f"Agent exceeded max iterations: {e}",
             run_started_at=started_at,
-            run_failed_at=datetime.utcnow(),
+            run_failed_at=datetime.now(UTC),
             thread_id=thread_id,
         )
     except ValidationError as e:
@@ -96,7 +96,7 @@ def run_briefing(topic: str) -> BriefingResult:
             reason="schema_violation",
             message=f"A node produced output that failed validation: {e}",
             run_started_at=started_at,
-            run_failed_at=datetime.utcnow(),
+            run_failed_at=datetime.now(UTC),
             thread_id=thread_id,
         )
     except Exception as e:
@@ -109,7 +109,7 @@ def run_briefing(topic: str) -> BriefingResult:
             reason="unknown",
             message=f"{type(e).__name__}: {e}",
             run_started_at=started_at,
-            run_failed_at=datetime.utcnow(),
+            run_failed_at=datetime.now(UTC),
             thread_id=thread_id,
         )
 
@@ -118,7 +118,7 @@ def run_briefing(topic: str) -> BriefingResult:
         topic=topic,
         briefing_markdown=final_state["final_briefing"],
         run_started_at=started_at,
-        run_completed_at=datetime.utcnow(),
+        run_completed_at=datetime.now(UTC),
         thread_id=thread_id,
         source_urls=[s["article_url"] for s in final_state["summaries"]],
     )
