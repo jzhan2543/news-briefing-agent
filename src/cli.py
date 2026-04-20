@@ -13,6 +13,7 @@ import sys
 
 from src.runner import run_briefing
 
+import asyncio
 
 def main() -> None:
     if len(sys.argv) < 2:
@@ -20,7 +21,7 @@ def main() -> None:
         sys.exit(1)
 
     topic = " ".join(sys.argv[1:])
-    result = run_briefing(topic)
+    result = asyncio.run(run_briefing(topic))
 
     if result.status == "success":
         print(result.briefing_markdown)

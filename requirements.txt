@@ -8,6 +8,7 @@ langchain-anthropic
 tavily-python
 httpx
 tenacity
+asyncio
 
 # --- Data & validation ---
 pydantic>=2
@@ -17,6 +18,7 @@ langsmith
 
 # --- Testing (Day 4 acceptance) ---
 pytest
+pytest-asyncio
 
 # --- Utilities ---
 python-dotenv

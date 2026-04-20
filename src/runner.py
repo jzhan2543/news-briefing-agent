@@ -20,6 +20,7 @@ from pydantic import ValidationError
 from src.graph import build_graph
 from src.schemas import BriefingFailure, BriefingResult, BriefingSuccess
 
+import asyncio
 
 # Input validation thresholds. Topics shorter than 15 chars are too vague
 # to plan against; topics longer than 500 chars are not topics, they're
@@ -33,7 +34,7 @@ _MAX_TOPIC_LEN = 500
 _compiled_graph = build_graph()
 
 
-def run_briefing(topic: str) -> BriefingResult:
+async def run_briefing(topic: str) -> BriefingResult:
     """Run the briefing pipeline for one topic.
 
     Never raises; always returns a BriefingResult. Failures inside the
@@ -80,7 +81,7 @@ def run_briefing(topic: str) -> BriefingResult:
     }
 
     try:
-        final_state = _compiled_graph.invoke(initial_state, config=config)
+        final_state = await _compiled_graph.ainvoke(initial_state, config=config)
     except GraphRecursionError as e:
         return BriefingFailure(
             topic=topic,

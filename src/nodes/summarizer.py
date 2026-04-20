@@ -1,34 +1,125 @@
 """
-Summarizer node: produces a 2-3 sentence summary per relevant article.
+Summarizer node.
 
-Day 4 stub: produces a trivial summary for every article with relevance >= threshold.
-Real implementation (SPEC §3.4) lands on Day 5.
+For each scored_article (Filter's output), produce a Summary with a
+one-paragraph summary and 2-4 key claims. Runs in parallel over all
+surviving articles via asyncio.gather.
+
+Design notes:
+- Parallel pattern matches the Filter: one LLM call per article,
+  gather with return_exceptions=True. Individual summarization failures
+  log and skip; the briefing can still be assembled from whatever
+  succeeds. If zero summaries survive, the Formatter can handle it or
+  we add a guardrail node on Day 7.
+- key_claims exists to give the Formatter something structured to
+  work with (and gives Day 6 eval a clean target for faithfulness
+  checks — each claim should be verifiable against the source snippet).
+- Temperature 0.0: we want stable summaries across runs for eval
+  reproducibility, not creative rephrasing.
 """
 
-from src.config import RELEVANCE_THRESHOLD
-from src.schemas import BriefingState, Summary, ScoredArticle
+import asyncio
+import json
+from typing import Any
+
+from pydantic import ValidationError
+
+from src.llm import SUMMARIZER_MODEL, get_chat_model
+from src.schemas import BriefingState, ScoredArticle, Summary
 
 
-def summarizer_node_stub(state: BriefingState) -> dict:
-    """Stub: trivial summary for each article above the relevance threshold."""
-    summaries = []
-    for sa_dict in state["scored_articles"]:
-        sa = ScoredArticle.model_validate(sa_dict)
-        if sa.relevance < RELEVANCE_THRESHOLD:
-            continue
-        summary = Summary(
-            article_url=sa.article.url,
-            summary=f"Stub summary for: {sa.article.title}",
-            key_claims=["Stub claim 1", "Stub claim 2"],
+_model = get_chat_model(model=SUMMARIZER_MODEL, temperature=0.0)
+
+
+SUMMARY_PROMPT = """You are summarizing one article for a news briefing.
+
+Topic of the briefing: {topic}
+
+Article:
+  Title: {title}
+  URL: {url}
+  Snippet: {snippet}
+
+Produce a one-paragraph summary (3-5 sentences) focused on what this
+article contributes to understanding the topic, and 2-4 key claims —
+each a single declarative sentence that can be traced back to the
+article's content.
+
+Respond with ONLY a JSON object, no prose, no code fences:
+{{"summary": "<one paragraph>", "key_claims": ["<claim 1>", "<claim 2>", ...]}}"""
+
+
+def _rehydrate_scored(scored_dicts: list[dict]) -> list[ScoredArticle]:
+    """dicts -> ScoredArticle models. Skip malformed entries with a log line."""
+    out: list[ScoredArticle] = []
+    for d in scored_dicts:
+        try:
+            out.append(ScoredArticle.model_validate(d))
+        except ValidationError as e:
+            print(f"[summarizer] skipping malformed scored_article: {e}")
+    return out
+
+
+async def _summarize_one(scored: ScoredArticle, topic: str) -> Summary:
+    """Summarize one article. Raises on invalid JSON or schema violation."""
+    article = scored.article
+    prompt = SUMMARY_PROMPT.format(
+        topic=topic,
+        title=article.title,
+        url=str(article.url),
+        snippet=article.snippet,
+    )
+
+    response = await _model.ainvoke([{"role": "user", "content": prompt}])
+    raw = response.content.strip() if isinstance(response.content, str) else ""
+    if not raw:
+        raise ValueError(f"Summarizer got empty response for {article.url}")
+
+    # Same prose-wrapping workaround as the Filter.
+    start = raw.find("{")
+    end = raw.rfind("}")
+    if start == -1 or end == -1 or end < start:
+        raise ValueError(
+            f"No JSON object in summarizer response for {article.url}: {raw[:200]!r}"
         )
-        summaries.append(summary.model_dump(mode="json"))
+
+    try:
+        parsed = json.loads(raw[start : end + 1])
+    except json.JSONDecodeError as e:
+        raise ValueError(
+            f"Summarizer JSON parse failed for {article.url}: {raw!r}"
+        ) from e
+
+    return Summary(
+        article_url=article.url,
+        summary=parsed["summary"],
+        key_claims=parsed["key_claims"],
+    )
+
+
+async def summarizer_node(state: BriefingState) -> dict[str, Any]:
+    """
+    Summarizer node body.
+
+    Reads: state["scored_articles"], state["topic"]
+    Writes: summaries (list of Summary dicts)
+    """
+    scored = _rehydrate_scored(state["scored_articles"])
+    topic = state["topic"]
+
+    if not scored:
+        return {"summaries": []}
+
+    results = await asyncio.gather(
+        *(_summarize_one(s, topic) for s in scored),
+        return_exceptions=True,
+    )
+
+    summaries: list[dict] = []
+    for s, result in zip(scored, results):
+        if isinstance(result, Exception):
+            print(f"[summarizer] failed for {s.article.url}: {result}")
+            continue
+        summaries.append(result.model_dump(mode="json"))
+
     return {"summaries": summaries}
-
-
-# Real implementation placeholder. Day 5:
-# - Pydantic SummaryOutput(summary, key_claims) with length constraints
-# - ChatAnthropic(model="claude-sonnet-4-5", temperature=0.0).with_structured_output
-# - SUMMARIZER_SYSTEM_PROMPT with "only from snippet" faithfulness rule
-# - def summarizer_node(state) -> dict  # one LLM call per eligible article
-
-    
