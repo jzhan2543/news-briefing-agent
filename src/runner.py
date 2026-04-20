@@ -18,6 +18,7 @@ from langgraph.errors import GraphRecursionError
 from pydantic import ValidationError
 
 from src.graph import build_graph
+from src.graph_multi import build_multi_agent_graph
 from src.schemas import BriefingFailure, BriefingResult, BriefingSuccess
 
 import asyncio
@@ -32,6 +33,7 @@ _MAX_TOPIC_LEN = 500
 # pattern, testable because build_graph() accepts a checkpointer arg for
 # tests that want to swap it out.
 _compiled_graph = build_graph()
+_compiled_multi_agent_graph = build_multi_agent_graph()
 
 
 async def run_briefing(topic: str) -> BriefingResult:
@@ -122,4 +124,116 @@ async def run_briefing(topic: str) -> BriefingResult:
         run_completed_at=datetime.now(UTC),
         thread_id=thread_id,
         source_urls=[s["article_url"] for s in final_state["summaries"]],
+    )
+
+
+async def run_briefing_multi_agent(topic: str) -> BriefingResult:
+    """Run the multi-agent briefing pipeline for one topic.
+
+    Shares all input validation and exception taxonomy with run_briefing().
+    The difference is the compiled graph and the initial state shape: this
+    variant seeds the multi-agent revision-loop fields (revision_count,
+    critic_verdict, critic_feedback, draft) to their initial values.
+
+    Never raises; always returns a BriefingResult.
+
+    Note on source_urls: multi-agent skips the Summarizer node, so the
+    single-agent version's `final_state["summaries"]` is empty. We reconstruct
+    source_urls from scored_articles instead — every article that survived
+    critic_articles' threshold is a potential citation source. The briefing
+    may not cite all of them, but this list is the candidate set. A Day 6
+    refinement: parse actual cited URLs out of the markdown to make
+    source_urls reflect what the Writer actually used.
+    """
+    started_at = datetime.now(UTC)
+
+    # --- input validation (before graph invocation) ---
+    if not isinstance(topic, str):
+        return BriefingFailure(
+            topic=str(topic),
+            reason="invalid_topic",
+            message=f"Expected str, got {type(topic).__name__}.",
+            run_started_at=started_at,
+            run_failed_at=datetime.now(UTC),
+            thread_id=None,
+        )
+    topic = topic.strip()
+    if not (_MIN_TOPIC_LEN <= len(topic) <= _MAX_TOPIC_LEN):
+        return BriefingFailure(
+            topic=topic,
+            reason="invalid_topic",
+            message=(
+                f"Topic must be {_MIN_TOPIC_LEN}-{_MAX_TOPIC_LEN} chars; "
+                f"got {len(topic)}."
+            ),
+            run_started_at=started_at,
+            run_failed_at=datetime.now(UTC),
+            thread_id=None,
+        )
+
+    # --- graph invocation ---
+    thread_id = str(uuid4())
+    config = {"configurable": {"thread_id": thread_id}}
+    initial_state = {
+        # Fields inherited from BriefingState
+        "topic": topic,
+        "run_started_at": started_at,
+        "search_queries": [],
+        "raw_articles": [],
+        "scored_articles": [],
+        "summaries": [],            # unused in multi-agent; seeded for TypedDict compliance
+        "final_briefing": "",
+        # Multi-agent additions
+        "revision_count": 0,
+        "critic_verdict": None,
+        "critic_feedback": None,
+        "draft": None,
+    }
+
+    try:
+        final_state = await _compiled_multi_agent_graph.ainvoke(
+            initial_state, config=config
+        )
+    except GraphRecursionError as e:
+        return BriefingFailure(
+            topic=topic,
+            reason="max_iterations",
+            message=f"Agent exceeded max iterations: {e}",
+            run_started_at=started_at,
+            run_failed_at=datetime.now(UTC),
+            thread_id=thread_id,
+        )
+    except ValidationError as e:
+        return BriefingFailure(
+            topic=topic,
+            reason="schema_violation",
+            message=f"A node produced output that failed validation: {e}",
+            run_started_at=started_at,
+            run_failed_at=datetime.now(UTC),
+            thread_id=thread_id,
+        )
+    except Exception as e:
+        return BriefingFailure(
+            topic=topic,
+            reason="unknown",
+            message=f"{type(e).__name__}: {e}",
+            run_started_at=started_at,
+            run_failed_at=datetime.now(UTC),
+            thread_id=thread_id,
+        )
+
+    # --- success path ---
+    # Reconstruct source_urls from scored_articles rather than summaries,
+    # since the multi-agent graph skips the Summarizer. See docstring.
+    source_urls = [
+        s["article"]["url"]
+        for s in final_state.get("scored_articles", [])
+    ]
+    return BriefingSuccess(
+        topic=topic,
+        briefing_markdown=final_state["final_briefing"],
+        run_started_at=started_at,
+        run_completed_at=datetime.now(UTC),
+        thread_id=thread_id,
+        source_urls=source_urls,
     )

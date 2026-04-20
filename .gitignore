@@ -9,6 +9,7 @@ __pycache__/
 .env
 .env.local
 notes/
+scratch/
 
 # macOS
 .DS_Store

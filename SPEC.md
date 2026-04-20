@@ -1257,3 +1257,49 @@ Save the following artifacts after the real Day 4 run:
 - A one-paragraph reflection in `day4_summary.md` noting anything surprising about the first real run.
 
 The Day 4 summary is written tomorrow morning before starting Day 5.
+
+## Multi-Agent Variant (Day 5 PM)
+
+### Why
+To directly compare a workflow-with-embedded-agent (Quadrant 2) against a
+supervisor-pattern multi-agent (Quadrant 4) on identical inputs. The test
+is whether the added complexity earns its cost in quality or catches errors
+the single-agent version misses.
+
+### Topology
+[your sketch, in prose or ASCII]
+
+### The one model-driven branch
+Critic(draft)'s accept/revise verdict is the only place in the graph where
+control flow depends on model judgment. The supervisor itself is a
+deterministic conditional edge — chosen deliberately; an LLM call for
+`if verdict == 'revise' and count < 2` would be performance theater.
+
+### Revision bound
+Maximum 2 revision rounds. On the third rejection, force-accept the current
+draft. This is a behavioral guardrail — it prevents runaway critic/writer
+disagreement from burning tokens without progress.
+
+### State additions
+[the 4 new fields, with reducer choices and one-line rationale each]
+
+### Known failure modes
+- Critic produces malformed verdict → fallback to accept, log.
+- Writer ignores feedback on revision → revision_count still advances; eventually force-accepts. (Detectable in eval by comparing revised drafts to their feedback.)
+- Critic rejects every draft → force-accept at round 2. Metric worth tracking: what % of runs hit the force-accept path?
+
+
+## Block1 Final Design
+START
+  ↓
+Researcher              (reuse from single-agent, unchanged)
+  ↓
+Critic(articles)        (replaces Filter; outputs scored_articles with issue flags)
+  ↓
+Writer                  (drafts from scored_articles; on revision, sees critic_feedback)
+  ↓
+Critic(draft)           (outputs verdict + always writes final_briefing = draft)
+  ↓
+[conditional edge: should_continue_revising]
+  ├── accept OR revision_count >= 2  → END
+  └── revise AND revision_count < 2  → Writer
