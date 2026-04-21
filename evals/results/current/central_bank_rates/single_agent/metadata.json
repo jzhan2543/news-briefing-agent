@@ -1,0 +1,27 @@
+{
+  "briefing_chars": 7322,
+  "duration_s": 69.92902,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "single_agent",
+  "run_completed_at": "2026-04-21T16:34:17.535149+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:33:07.606129+00:00",
+  "source_urls": [
+    "https://www.cnbc.com/2026/03/18/fed-interest-rate-decision-march-2026.html",
+    "https://equalsmoney.com/economic-calendar/events/boe-interest-rate-decision",
+    "https://maseconomics.com/central-bank-interest-rate-decisions-how-the-fed-ecb-and-boe-shape-your-economy/",
+    "https://global.morningstar.com/en-gb/economy/key-interest-rate-decision-dates-2026",
+    "https://www.linkedin.com/posts/capital-street-fx_capitalstreetfx-monetarypolicy-centralbanks-activity-7439217278514159617-W3xx",
+    "https://www.rlam.com/international/our-views/2026/boe-and-ecb-rate-decisions-both-on-hold-for-now/",
+    "https://www.usbank.com/investing/financial-perspectives/market-news/federal-reserve-tapering-asset-purchases.html",
+    "https://polymarket.com/event/ecb-interest-rates-april-2026",
+    "https://www.cnbc.com/2026/04/16/ecb-interest-rates-hike-inflation-iran-washington.html",
+    "https://money.usnews.com/investing/news/articles/2026-04-16/ecb-may-not-have-rate-hike-evidence-by-april-30-meeting-policymaker-says",
+    "https://financedailyshot.com/blog/ecb-april-rate-cut-winners-losers-2026"
+  ],
+  "status": "success",
+  "thread_id": "fb7605de-761c-4dee-a79f-899b2b4803ea",
+  "topic": "Central bank interest rate decisions this quarter",
+  "topic_id": "central_bank_rates"
+}

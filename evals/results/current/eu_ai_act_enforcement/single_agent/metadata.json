@@ -1,0 +1,29 @@
+{
+  "briefing_chars": 13390,
+  "duration_s": 111.825347,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "single_agent",
+  "run_completed_at": "2026-04-21T16:02:26.648403+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:00:34.823056+00:00",
+  "source_urls": [
+    "https://epthinktank.eu/2026/03/18/enforcement-of-the-ai-act/",
+    "https://www.jdsupra.com/legalnews/state-of-the-act-eu-ai-act-3732095/",
+    "https://edri.org/our-work/open-letter-european-commission-member-states-keep-ai-act-national-implementation-on-track/",
+    "https://www.euaiact.com/key-issue/1",
+    "https://www.holisticai.com/blog/penalties-of-the-eu-ai-act",
+    "https://www.technologyslegaledge.com/2025/11/state-of-the-act-eu-ai-act-implementation-in-key-member-states/",
+    "https://iapp.org/resources/article/eu-ai-act-regulatory-directory",
+    "https://artificialintelligenceact.eu/national-implementation-plans/",
+    "https://www.unesco.org/en/articles/who-governs-ai-eu-breakdown-authorities-eu-ai-act",
+    "https://sloanreview.mit.edu/article/organizations-face-challenges-in-timely-compliance-with-the-eu-ai-act/",
+    "https://kpmg.com/us/en/articles/2024/how-eu-ai-act-affects-us-based-companies.html",
+    "https://cdp.cooley.com/the-eu-ai-act-key-milestones-compliance-challenges-and-the-road-ahead/",
+    "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+  ],
+  "status": "success",
+  "thread_id": "ce26ec54-94f4-4d36-8113-0175926cc265",
+  "topic": "EU AI Act enforcement across member states",
+  "topic_id": "eu_ai_act_enforcement"
+}

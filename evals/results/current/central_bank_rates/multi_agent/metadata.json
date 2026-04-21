@@ -1,0 +1,27 @@
+{
+  "briefing_chars": 3922,
+  "duration_s": 98.331143,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "multi_agent",
+  "run_completed_at": "2026-04-21T16:21:12.841644+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:19:34.510501+00:00",
+  "source_urls": [
+    "https://www.cnbc.com/2026/03/18/fed-interest-rate-decision-march-2026.html",
+    "https://equalsmoney.com/economic-calendar/events/boe-interest-rate-decision",
+    "https://www.cnbc.com/2026/01/28/fed-rate-decision-january-2026.html",
+    "https://www.rlam.com/international/our-views/2026/boe-and-ecb-rate-decisions-both-on-hold-for-now/",
+    "https://global.morningstar.com/en-gb/economy/key-interest-rate-decision-dates-2026",
+    "https://www.stlouisfed.org/from-the-president/remarks/2026/economic-outlook-monetary-policy-aei",
+    "https://kpmg.com/us/en/articles/2026/april-2026-central-bank-scanner.html",
+    "https://www.jpmorgan.com/insights/global-research/economy/global-inflation-forecast",
+    "https://www.cnbc.com/2026/04/16/ecb-interest-rates-hike-inflation-iran-washington.html",
+    "https://polymarket.com/event/ecb-interest-rates-april-2026",
+    "https://money.usnews.com/investing/news/articles/2026-04-16/ecb-may-not-have-rate-hike-evidence-by-april-30-meeting-policymaker-says"
+  ],
+  "status": "success",
+  "thread_id": "31ef2e8b-8ad7-41d4-b56f-9fd234e9ba3f",
+  "topic": "Central bank interest rate decisions this quarter",
+  "topic_id": "central_bank_rates"
+}

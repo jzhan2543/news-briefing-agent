@@ -1,0 +1,27 @@
+{
+  "briefing_chars": 8614,
+  "duration_s": 82.794339,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "single_agent",
+  "run_completed_at": "2026-04-21T16:06:42.860785+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:05:20.066446+00:00",
+  "source_urls": [
+    "https://taxsummaries.pwc.com/united-kingdom/individual/significant-developments",
+    "https://www.which.co.uk/news/article/11-tax-changes-to-know-about-in-2026-aNHEV0G8SSWI",
+    "https://johnstoncarmichael.com/insights/the-key-vat-announcements-from-the-autumn-budget",
+    "https://taxscape.deloitte.com/article/uk-tax-landscape--key-changes-for-2026.aspx",
+    "https://ifs.org.uk/articles/changes-departmental-spending-upcoming-budget",
+    "https://www.statista.com/statistics/298524/government-spending-in-the-uk/?srsltid=AfmBOorYv4omXsqqwNGocqrsvRM9Aaa6Z6E3iw0EPErH71SLrC0TJcDa",
+    "https://ifs.org.uk/sites/default/files/2025-09/UK_Defence_Spending_IFS_Green-Budget_2025_Chapter_0.pdf",
+    "https://questions-statements.parliament.uk/written-questions/detail/2025-12-04/97099/",
+    "https://www.iod.com/news/uk-economy/iod-press-release-four-in-five-business-leaders-react-negatively-to-budget/",
+    "https://www.iser.essex.ac.uk/research/publications/working-papers/cempa/cempa3-26",
+    "https://www.beachmarketing.co.uk/uk-autumn-budget-impact-on-manufacturing-businesses/"
+  ],
+  "status": "success",
+  "thread_id": "b44e9337-7dfe-4689-8701-e27f1f72f937",
+  "topic": "UK Autumn Budget 2026 tax and spending changes",
+  "topic_id": "uk_budget_2026"
+}

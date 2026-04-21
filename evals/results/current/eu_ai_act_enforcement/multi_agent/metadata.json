@@ -1,0 +1,27 @@
+{
+  "briefing_chars": 5378,
+  "duration_s": 113.078679,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "multi_agent",
+  "run_completed_at": "2026-04-21T16:18:33.874897+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:16:40.796218+00:00",
+  "source_urls": [
+    "https://epthinktank.eu/2026/03/18/enforcement-of-the-ai-act/",
+    "https://www.jdsupra.com/legalnews/state-of-the-act-eu-ai-act-3732095/",
+    "https://edri.org/our-work/open-letter-european-commission-member-states-keep-ai-act-national-implementation-on-track/",
+    "https://www.euaiact.com/key-issue/1",
+    "https://www.holisticai.com/blog/penalties-of-the-eu-ai-act",
+    "https://www.technologyslegaledge.com/2025/11/state-of-the-act-eu-ai-act-implementation-in-key-member-states/",
+    "https://iapp.org/resources/article/eu-ai-act-regulatory-directory",
+    "https://artificialintelligenceact.eu/national-implementation-plans/",
+    "https://www.unesco.org/en/articles/who-governs-ai-eu-breakdown-authorities-eu-ai-act",
+    "https://cdp.cooley.com/the-eu-ai-act-key-milestones-compliance-challenges-and-the-road-ahead/",
+    "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+  ],
+  "status": "success",
+  "thread_id": "e94738d9-72d1-4116-9766-69313ca33b0a",
+  "topic": "EU AI Act enforcement across member states",
+  "topic_id": "eu_ai_act_enforcement"
+}

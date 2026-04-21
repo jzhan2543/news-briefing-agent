@@ -1,0 +1,25 @@
+{
+  "briefing_chars": 4336,
+  "duration_s": 76.924639,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "multi_agent",
+  "run_completed_at": "2026-04-21T16:26:31.547893+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:25:14.623254+00:00",
+  "source_urls": [
+    "https://taxsummaries.pwc.com/united-kingdom/individual/significant-developments",
+    "https://www.which.co.uk/news/article/11-tax-changes-to-know-about-in-2026-aNHEV0G8SSWI",
+    "https://johnstoncarmichael.com/insights/the-key-vat-announcements-from-the-autumn-budget",
+    "https://taxscape.deloitte.com/article/uk-tax-landscape--key-changes-for-2026.aspx",
+    "https://www.sjp.co.uk/individuals/news/autumn-budget-sweeping-up-the-budget-announcements",
+    "https://www.statista.com/statistics/298524/government-spending-in-the-uk/?srsltid=AfmBOorYv4omXsqqwNGocqrsvRM9Aaa6Z6E3iw0EPErH71SLrC0TJcDa",
+    "https://commonslibrary.parliament.uk/research-briefings/cbp-10500/",
+    "https://www.iser.essex.ac.uk/research/publications/working-papers/cempa/cempa3-26",
+    "https://www.iod.com/news/uk-economy/iod-press-release-four-in-five-business-leaders-react-negatively-to-budget/"
+  ],
+  "status": "success",
+  "thread_id": "b15198c3-c3ff-4e73-bc71-c48d2a5878fa",
+  "topic": "UK Autumn Budget 2026 tax and spending changes",
+  "topic_id": "uk_budget_2026"
+}

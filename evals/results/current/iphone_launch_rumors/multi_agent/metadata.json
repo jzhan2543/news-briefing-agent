@@ -1,0 +1,28 @@
+{
+  "briefing_chars": 4834,
+  "duration_s": 120.488476,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "multi_agent",
+  "run_completed_at": "2026-04-21T16:24:13.903678+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T16:22:13.415202+00:00",
+  "source_urls": [
+    "https://www.macrumors.com/roundup/iphone-17/",
+    "https://www.macworld.com/article/2393967/iphone-17-release-date-specs-features-rumors.html",
+    "https://www.oled-info.com/reports-suggest-lg-display-struggles-supply-chain-problems-and-may-not-be-able",
+    "https://www.supplychainbrain.com/articles/42572-report-foxconn-workers-faced-tough-conditions-during-iphone-17-push",
+    "https://appleinsider.com/inside/iphone-17",
+    "https://www.digitimes.com/news/a20250911PD201/apple-iphone-production-supply-chain-foxconn.html",
+    "https://appleinsider.com/articles/25/10/22/deep-production-cutbacks-again-rumored-to-hit-iphone-air-supply-chain",
+    "https://wccftech.com/apple-slashes-iphone-17-air-production-amid-virtually-no-demand-moves-m5-vision-pro-manufacturing-to-vietnam/",
+    "https://www.linkedin.com/posts/sunish-bhatia-6280a124a_apple-iphone17-globalsupplychain-activity-7382454688069115904-PWeJ",
+    "https://www.suppliersmap.com/apple/iphone17pro",
+    "https://www.ainvest.com/news/apple-iphone-17-launch-catalyst-semiconductor-demand-supply-chain-resilience-2510/",
+    "https://blog.rwazi.com/how-apples-iphone-17-is-redefining-global-supply-chains/"
+  ],
+  "status": "success",
+  "thread_id": "92d220d8-bee1-46ed-8763-c95a424a4276",
+  "topic": "iPhone 17 launch rumors and supply-chain reports",
+  "topic_id": "iphone_launch_rumors"
+}

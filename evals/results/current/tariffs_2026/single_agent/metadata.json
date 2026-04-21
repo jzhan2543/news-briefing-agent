@@ -1,0 +1,31 @@
+{
+  "briefing_chars": 12989,
+  "duration_s": 95.112107,
+  "failure_message": null,
+  "failure_reason": null,
+  "pipeline": "single_agent",
+  "run_completed_at": "2026-04-21T15:45:11.419510+00:00",
+  "run_id": "current",
+  "run_started_at": "2026-04-21T15:43:36.307403+00:00",
+  "source_urls": [
+    "https://ustr.gov/sites/default/files/files/Press/Releases/2026/2026%20Trade%20Policy%20Agenda.pdf",
+    "https://dimerco.com/us-tariff-update-2026/",
+    "https://capstonedc.com/insights/trade-2026-preview/",
+    "https://www.cnbc.com/2026/04/03/trump-tariffs-trade-war-impact.html",
+    "https://en.wikipedia.org/wiki/Tariffs_in_the_second_Trump_administration",
+    "https://equitablegrowth.org/u-s-businesses-report-that-tariff-policies-will-likely-lead-to-price-increases-and-labor-market-impacts-in-2026/",
+    "https://www.polarismarketresearch.com/blog/us-tariffs-impact-consumer-goods-industry",
+    "https://wiss.com/trump-tariffs-2026-financial-impact-on-us-manufacturers/",
+    "https://www.cnn.com/interactive/2026/business/tracking-trump-tariff-impact-us/",
+    "https://www.jpmorgan.com/insights/global-research/current-events/us-tariffs",
+    "https://www.cfr.org/articles/countries-react-to-scotus-tariff-ruling",
+    "https://www.reuters.com/world/china/eu-trade-surplus-shrinks-60-us-exports-fall-due-tariffs-2026-04-17/",
+    "https://spectrumlocalnews.com/us/snplus/business/2026/03/12/president-trump-tariffs-section-301-investigations-16-countries-european-union",
+    "https://www.scmp.com/news/china/diplomacy/article/3346639/tariffs-stockpiles-distrust-eus-messy-bid-ditch-china-hits-capacity-problems",
+    "https://think.ing.com/articles/the-us-tariff-shock-same-negative-impact-different-drivers-in-2025-and-2026/"
+  ],
+  "status": "success",
+  "thread_id": "7c063893-b53b-4e59-a7e3-380e3e91276b",
+  "topic": "US tariff policy changes in 2026",
+  "topic_id": "tariffs_2026"
+}
