@@ -1,0 +1,125 @@
+{
+    "schema_version": "0.1",
+    "description": "Golden evaluation set for news-briefing-agent. Day 6 bootstrap — 5 topics chosen to exercise the source-quality hypothesis from DESIGN.md §5. Three are repeats of Day 5's comparison topics (known priors we can cross-check the harness against); two are new cases chosen to stretch the source-quality distribution.",
+    "deferred": [
+        "Expand to 10-15 topics once the harness shape and metric pipeline are validated. 5 is sized for 'does the harness work'; 15+ is sized for 'what do the metrics actually say'. Don't scale the topic set before trusting the metrics — wasted effort.",
+        "Add a topic with expected_max_revisions=2 to exercise the second revision round. Can't be engineered from topic choice alone; depends on how the Critic and Writer interact. Revisit once the harness has run and we've seen real revision-count distributions.",
+        "Add an expected_pipeline_winner field per topic once we trust our own predictions. Day 5's three hypothesis retractions argue against pre-committing winners right now; the metric output should settle it.",
+        "Replace iphone_launch_rumors once iPhone 17 launches (rumor landscape evaporates post-announcement). Good long-term replacement categories for sketchy-source-dominant topics: cryptocurrency project announcements, celebrity health rumors, early-stage startup funding claims."
+    ],
+    "cache_invalidation_note": "The Tavily cache is keyed on the Planner's generated queries, not the topic string. Minor re-wordings of a topic ('US tariff policy changes in 2026' → 'US tariff policy 2026') may cause the Planner to emit different queries, which miss the cache and trigger re-fetches. If you want a topic edit to preserve the pinned article set, change the id freely but leave the topic string alone, or populate the cache deliberately with the new queries before the next eval run.",
+    "reputable_domains_notes": "The must_cite_domains / must_not_cite_domains fields are starting intuitions, not absolute verdicts. A reputable-domain allowlist lives separately in evals/reputable_domains.txt so the source-quality metric has a single source of truth across topics.",
+    "topics": [{
+            "id": "tariffs_2026",
+            "topic": "US tariff policy changes in 2026",
+            "notes": "Day 5 PM: multi-agent pipeline's cleanest architectural win. Single-agent cited wealth-management and accounting-firm blogs for NY Fed research findings; multi-agent replaced those with primary-source attribution (Budget Lab at Yale, Tax Foundation, ING). Same source count, meaningfully higher average quality. Use this topic as the canonical 'multi-agent earns its cost on source laundering' anchor — we expect the source-quality metric delta to be largest here.",
+            "trajectory_expectations": {
+                "researcher_tool_calls": { "min": 2, "max": 5 },
+                "expected_max_revisions": 1
+            },
+            "must_cite_domains": [
+                "taxfoundation.org",
+                "nytimes.com",
+                "reuters.com",
+                "wsj.com",
+                "budgetlab.yale.edu",
+                "piie.com",
+                "ustr.gov",
+                "whitehouse.gov"
+            ],
+            "must_not_cite_domains": [
+                "elevatewealth.ae",
+                "wiss.com"
+            ],
+            "ideal_briefing_sketch": "A good briefing covers (a) the specific tariff rates announced, (b) which countries or product categories, (c) near-term market or consumer-price effects, (d) retaliatory measures if any. Claims about who pays must cite primary research (NY Fed, Tax Foundation, Budget Lab, Peterson Institute, ING) — not wealth-management or accounting-firm blogs restating those findings. Corporate anecdotes OK as illustration, not as evidence."
+        },
+        {
+            "id": "eu_ai_act_enforcement",
+            "topic": "EU AI Act enforcement across member states",
+            "notes": "Day 5 PM: multi-agent's conservatism cost coverage. Multi-agent dropped EDRi civil-society finding, MIT SMR compliance readiness analysis, Germany implementation details, digital omnibus — without obvious faithfulness wins. Use this topic to stress-test the 'multi-agent length gap' question: do the dropped claims materially hurt the briefing's informativeness? Expect: single-agent longer and better covered; multi-agent tighter but possibly over-pruned.",
+            "trajectory_expectations": {
+                "researcher_tool_calls": { "min": 2, "max": 5 },
+                "expected_max_revisions": 1
+            },
+            "must_cite_domains": [
+                "europa.eu",
+                "ec.europa.eu",
+                "reuters.com",
+                "ft.com",
+                "bloomberg.com",
+                "politico.eu",
+                "edri.org"
+            ],
+            "must_not_cite_domains": [],
+            "ideal_briefing_sketch": "A good briefing names (a) which articles/requirements kicked in on which dates, (b) enforcement bodies per member state (national competent authorities), (c) notable compliance actions or penalties if any, (d) industry response and readiness gaps. EDRi and MIT SMR are reasonable for civil-society and readiness perspectives respectively. Primary sources are europa.eu / ec.europa.eu; news layer is Reuters / FT / Politico EU."
+        },
+        {
+            "id": "central_bank_rates",
+            "topic": "Central bank interest rate decisions this quarter",
+            "notes": "Day 5 PM: the topic where the evaluation setup itself was the finding. Tavily returned substantially different article sets across single-agent and multi-agent runs of the same query, confounding the architectural comparison. This topic is included specifically to validate that the cache layer does what it's supposed to do — pin retrieval so the two pipelines see the same inputs. On the first run we populate the cache; on subsequent runs both pipelines should see byte-identical article lists per query.",
+            "trajectory_expectations": {
+                "researcher_tool_calls": { "min": 2, "max": 5 },
+                "expected_max_revisions": 1
+            },
+            "must_cite_domains": [
+                "federalreserve.gov",
+                "ecb.europa.eu",
+                "bankofengland.co.uk",
+                "reuters.com",
+                "ft.com",
+                "bloomberg.com",
+                "wsj.com"
+            ],
+            "must_not_cite_domains": [
+                "polymarket.com",
+                "investing.com"
+            ],
+            "ideal_briefing_sketch": "A good briefing covers (a) the specific rate decisions made this quarter by major central banks (Fed, ECB, BoE), (b) vote splits and dissenting views where reported, (c) forward guidance language shifts, (d) market-implied path for subsequent meetings. Primary central-bank communications (minutes, statements) are the gold-standard citation. Prediction markets (Polymarket) and aggregator polls (Investing.com) are not authoritative for policy claims — name-check OK as market sentiment, not OK as the source of a policy finding."
+        },
+        {
+            "id": "iphone_launch_rumors",
+            "topic": "iPhone 17 launch rumors and supply-chain reports",
+            "notes": "Stretch case — consumer-tech rumors are the category most polluted by blog-laundered claims restated across dozens of gadget sites. Hypothesis: the Researcher will return a high sketchy-source proportion; multi-agent's Critic(articles) should drop substantially more articles than on tariffs or central banks. If the source-quality metric gap isn't visibly larger here than on the EU AI Act topic, the hypothesis that multi-agent's value is source-quality-dependent is weakened.",
+            "trajectory_expectations": {
+                "researcher_tool_calls": { "min": 2, "max": 5 },
+                "expected_max_revisions": 1
+            },
+            "must_cite_domains": [
+                "apple.com",
+                "bloomberg.com",
+                "reuters.com",
+                "wsj.com",
+                "ft.com",
+                "nikkei.com"
+            ],
+            "must_not_cite_domains": [
+                "macrumors.com",
+                "9to5mac.com",
+                "appleinsider.com",
+                "phonearena.com",
+                "gsmarena.com"
+            ],
+            "ideal_briefing_sketch": "A good briefing is honest that most pre-launch rumor coverage is speculation. Primary supply-chain reports (Bloomberg's Mark Gurman, Nikkei Asia) are as close to authoritative as pre-launch gets. Apple statements are the gold standard but rarely available pre-announcement. The briefing should flag claim confidence explicitly ('reported by', 'rumored', 'analyst estimate') rather than asserting rumored features as settled."
+        },
+        {
+            "id": "uk_budget_2026",
+            "topic": "UK Autumn Budget 2026 tax and spending changes",
+            "notes": "Stretch case — this is the opposite end of the source-quality distribution. Primary sources (HM Treasury, OBR, Budget documents) are easy to find and heavily linked from mainstream news. Expectation: both pipelines cite primary sources readily; the source-quality metric gap between single-agent and multi-agent is small. If the gap is still large here, it suggests multi-agent is actively down-ranking good sources too aggressively — a pipeline issue, not a topic characteristic.",
+            "trajectory_expectations": {
+                "researcher_tool_calls": { "min": 2, "max": 5 },
+                "expected_max_revisions": 1
+            },
+            "must_cite_domains": [
+                "gov.uk",
+                "obr.uk",
+                "bbc.co.uk",
+                "ft.com",
+                "reuters.com",
+                "theguardian.com",
+                "ifs.org.uk"
+            ],
+            "must_not_cite_domains": [],
+            "ideal_briefing_sketch": "A good briefing covers (a) headline fiscal numbers — debt/GDP path, borrowing, spending totals, (b) specific tax changes by household type or sector, (c) OBR commentary on fiscal headroom and forecast assumptions, (d) political / market reaction. IFS analysis is the gold standard for independent fiscal commentary. Primary Budget documents are on gov.uk; OBR report is on obr.uk."
+        }
+    ]
+}

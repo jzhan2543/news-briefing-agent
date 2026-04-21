@@ -22,6 +22,8 @@ from tenacity import (
     wait_exponential,
 )
 
+from src.tools.tavily_cache import cached_tavily_search
+
 
 # Built once at module load, same pattern as the graph.
 _tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
@@ -59,7 +61,10 @@ def web_search(query: str) -> str:
             include year qualifiers unless the user's topic explicitly
             asks about a specific past period.
     """
-    results = _tavily_search(query)
+    # Cached layer: passthrough to _tavily_search when TAVILY_CACHE_DIR
+    # is unset (production default); disk-backed record/replay when set
+    # (eval harness default).
+    results = cached_tavily_search(query, _tavily_search)
     if not results:
         return ""
     lines = []

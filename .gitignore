@@ -11,6 +11,10 @@ __pycache__/
 notes/
 scratch/
 
+# Eval artifacts — cache is per-machine, results are generated
+evals/cache/
+evals/results/
+
 # macOS
 .DS_Store
 
